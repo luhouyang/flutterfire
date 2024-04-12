@@ -19,7 +19,10 @@ class MyInput extends StatelessWidget {
         maxLines: null,
         expands: true,
         controller: controller,
+        textAlign: TextAlign.start,
+        textAlignVertical: TextAlignVertical.top,
         decoration: InputDecoration(
+          contentPadding: const EdgeInsets.all(8),
           label: Text(labelText),
           fillColor: Colors.grey[200],
           focusColor: Colors.grey[100],
