@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:note/entities/note_entity.dart';
+import 'package:note/model/database_model.dart';
 import 'package:note/pages/add_note_page.dart';
 import 'package:note/widgets/my_title.dart';
 
@@ -19,7 +20,11 @@ class _HomePageState extends State<HomePage> {
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => const AddNotePage(),));
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const AddNotePage(),
+              ));
         },
       ),
       body: SingleChildScrollView(
@@ -61,13 +66,28 @@ class _HomePageState extends State<HomePage> {
       ),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Column(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            MyTitle(text: noteEntity.title),
-            const Divider(
-              height: 2,
+            Column(
+              children: [
+                MyTitle(text: noteEntity.title),
+                const Divider(
+                  height: 2,
+                ),
+                Text(
+                  noteEntity.content,
+                  textAlign: TextAlign.start,
+                )
+              ],
             ),
-            Text(noteEntity.content)
+            Checkbox(
+              value: noteEntity.checked,
+              onChanged: (value) async {
+                noteEntity.checked = !noteEntity.checked;
+                await DatabaseModel().updateNote(noteEntity);
+              },
+            )
           ],
         ),
       ),

@@ -9,7 +9,8 @@ class DatabaseModel {
     FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
     String docRef = firebaseFirestore.collection("notes").doc().id;
 
-    NoteEntity noteEntity = NoteEntity(title: title, content: content);
+    NoteEntity noteEntity = NoteEntity(
+        docId: docRef, title: title, content: content, checked: false);
 
     await firebaseFirestore
         .collection("notes")
@@ -26,5 +27,12 @@ class DatabaseModel {
 
   // fetch note
   // update note
+  Future<void> updateNote(NoteEntity noteEntity) async {
+    await FirebaseFirestore.instance
+        .collection("notes")
+        .doc(noteEntity.docId)
+        .set(noteEntity.toMap());
+  }
+  
   // delete note
 }
