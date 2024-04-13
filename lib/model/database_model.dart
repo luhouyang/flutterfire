@@ -1,4 +1,3 @@
-//TODO: implement database here
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:note/entities/note_entity.dart';

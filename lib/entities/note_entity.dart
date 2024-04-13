@@ -1,4 +1,3 @@
-//TODO: add as needed
 class NoteEntity {
   String title;
   String content;
