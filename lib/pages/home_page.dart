@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:note/entities/note_entity.dart';
 import 'package:note/model/database_model.dart';
 import 'package:note/pages/add_note_page.dart';
+import 'package:note/pages/update_note_page.dart';
 import 'package:note/widgets/my_title.dart';
 
 class HomePage extends StatefulWidget {
@@ -55,40 +56,46 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget noteCard(NoteEntity noteEntity) {
-    return Card(
-      margin: const EdgeInsets.all(8),
-      shadowColor: Colors.black,
-      shape: const BeveledRectangleBorder(
-        borderRadius: BorderRadius.all(
-          Radius.circular(8),
+    return InkWell(
+      onHover: (value) {},
+      onTap: () {
+        Navigator.push(context, MaterialPageRoute(builder: (context) => UpdateNotePage(noteEntity: noteEntity),));
+      },
+      child: Card(
+        margin: const EdgeInsets.all(8),
+        shadowColor: Colors.black,
+        shape: const BeveledRectangleBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(8),
+          ),
+          side: BorderSide(color: Colors.black),
         ),
-        side: BorderSide(color: Colors.black),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Column(
-              children: [
-                MyTitle(text: noteEntity.title),
-                const Divider(
-                  height: 2,
-                ),
-                Text(
-                  noteEntity.content,
-                  textAlign: TextAlign.start,
-                )
-              ],
-            ),
-            Checkbox(
-              value: noteEntity.checked,
-              onChanged: (value) async {
-                noteEntity.checked = !noteEntity.checked;
-                await DatabaseModel().updateNote(noteEntity);
-              },
-            )
-          ],
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                children: [
+                  MyTitle(text: noteEntity.title),
+                  const Divider(
+                    height: 2,
+                  ),
+                  Text(
+                    noteEntity.content,
+                    textAlign: TextAlign.start,
+                  )
+                ],
+              ),
+              Checkbox(
+                value: noteEntity.checked,
+                onChanged: (value) async {
+                  noteEntity.checked = !noteEntity.checked;
+                  await DatabaseModel().updateNote(noteEntity);
+                },
+              )
+            ],
+          ),
         ),
       ),
     );

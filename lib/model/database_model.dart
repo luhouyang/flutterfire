@@ -33,6 +33,9 @@ class DatabaseModel {
         .doc(noteEntity.docId)
         .set(noteEntity.toMap());
   }
-  
+
   // delete note
+  Future<void> deleteNote(String docId) async {
+    await FirebaseFirestore.instance.collection("notes").doc(docId).delete();
+  }
 }
