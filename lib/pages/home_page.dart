@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:note/entities/note_entity.dart';
+import 'package:note/model/auth_model.dart';
 import 'package:note/model/database_model.dart';
 import 'package:note/pages/add_note_page.dart';
 import 'package:note/pages/update_note_page.dart';
@@ -14,6 +16,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  String uid = FirebaseAuth.instance.currentUser!.uid;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,27 +34,42 @@ class _HomePageState extends State<HomePage> {
       ),
       body: SingleChildScrollView(
           physics: const NeverScrollableScrollPhysics(),
-          child: StreamBuilder(
-            stream: FirebaseFirestore.instance.collection("notes").snapshots(),
-            builder: (context, snapshot) {
-              if (!snapshot.hasData ||
-                  snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
+          child: Column(
+            children: [
+              StreamBuilder(
+                stream: FirebaseFirestore.instance
+                    .collection("users")
+                    .doc(uid)
+                    .collection("notes")
+                    .snapshots(),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData ||
+                      snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
 
-              return ListView.builder(
-                shrinkWrap: true,
-                itemCount: snapshot.data!.size,
-                itemBuilder: (context, index) {
-                  NoteEntity noteEntity =
-                      NoteEntity.fromMap(snapshot.data!.docs[index].data());
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: snapshot.data!.size,
+                    itemBuilder: (context, index) {
+                      NoteEntity noteEntity =
+                          NoteEntity.fromMap(snapshot.data!.docs[index].data());
 
-                  return noteCard(noteEntity);
+                      return noteCard(noteEntity);
+                    },
+                  );
                 },
-              );
-            },
+              ),
+              TextButton(
+                onPressed: () async {
+                  await AuthModel().logout();
+                },
+                style: ButtonStyle(backgroundColor: MaterialStatePropertyAll(Colors.grey[400])),
+                child: const MyTitle(text: "Logout"),
+              ),
+            ],
           )),
     );
   }
@@ -59,7 +78,11 @@ class _HomePageState extends State<HomePage> {
     return InkWell(
       onHover: (value) {},
       onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) => UpdateNotePage(noteEntity: noteEntity),));
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => UpdateNotePage(noteEntity: noteEntity),
+            ));
       },
       child: Card(
         margin: const EdgeInsets.all(8),
