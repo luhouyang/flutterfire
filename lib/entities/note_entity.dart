@@ -1,23 +1,26 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class NoteEntity {
   String docId;
   String title;
   String content;
   bool checked;
-  // date: DateTime
-  // tags: List<dynamic>
+  Timestamp date;
 
   NoteEntity(
       {required this.docId,
       required this.title,
       required this.content,
-      required this.checked});
+      required this.checked,
+      required this.date});
 
   factory NoteEntity.fromMap(Map<String, dynamic> map) {
     return NoteEntity(
         docId: map['docId'],
         title: map['title'],
         content: map['content'],
-        checked: map['checked']);
+        checked: map['checked'],
+        date: map['date']);
   }
 
   toMap() {
@@ -26,6 +29,7 @@ class NoteEntity {
       'title': title,
       'content': content,
       'checked': checked,
+      'date': date,
     };
   }
 }

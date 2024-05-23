@@ -6,12 +6,13 @@ import 'package:note/entities/user_entity.dart';
 
 class DatabaseModel {
   String uid = FirebaseAuth.instance.currentUser!.uid;
+  FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
 
   // add user
   Future<void> createUser(String newUid, String email, String name) async {
     UserEntity userEntity = UserEntity(username: name, email: email);
 
-    await FirebaseFirestore.instance
+    await firebaseFirestore
         .collection("users")
         .doc(newUid)
         .set(userEntity.toMap());
@@ -20,7 +21,6 @@ class DatabaseModel {
   // add note
   Future<void> addNote(String title, String content) async {
     // add note to "notes" collection
-    FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
     String docRef = firebaseFirestore
         .collection("users")
         .doc(uid)
@@ -29,7 +29,7 @@ class DatabaseModel {
         .id;
 
     NoteEntity noteEntity = NoteEntity(
-        docId: docRef, title: title, content: content, checked: false);
+        docId: docRef, title: title, content: content, checked: false, date: Timestamp.fromDate(DateTime.now()));
 
     await firebaseFirestore
         .collection("users")
@@ -50,7 +50,7 @@ class DatabaseModel {
 
   // update note
   Future<void> updateNote(NoteEntity noteEntity) async {
-    await FirebaseFirestore.instance
+    await firebaseFirestore
         .collection("users")
         .doc(uid)
         .collection("notes")
@@ -60,7 +60,7 @@ class DatabaseModel {
 
   // delete note
   Future<void> deleteNote(String docId) async {
-    await FirebaseFirestore.instance
+    await firebaseFirestore
         .collection("users")
         .doc(uid)
         .collection("notes")

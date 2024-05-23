@@ -41,6 +41,7 @@ class _HomePageState extends State<HomePage> {
                     .collection("users")
                     .doc(uid)
                     .collection("notes")
+                    .orderBy('date', descending: true)
                     .snapshots(),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData ||
@@ -99,10 +100,15 @@ class _HomePageState extends State<HomePage> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   MyTitle(text: noteEntity.title),
                   const Divider(
                     height: 2,
+                  ), 
+                  Text(
+                    noteEntity.date.toDate().toString(),
+                    textAlign: TextAlign.start,
                   ),
                   Text(
                     noteEntity.content,

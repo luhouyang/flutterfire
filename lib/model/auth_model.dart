@@ -13,10 +13,20 @@ class AuthModel {
       )
           .then((UserCredential userCredential) {
         DatabaseModel().createUser(userCredential.user!.uid, email, username);
+        debugPrint("SIGNING UP");
+      }).onError((error, stackTrace) {
+        showDialog(
+            context: context,
+            builder: (context) {
+              return Dialog(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text("Error during create user: $error"),
+                ),
+              );
+            });
       });
-
-      debugPrint("SIGNING UP");
-    } catch (e) {
+    } on FirebaseAuthException catch (e) {
       // Handle authentication exceptions
       debugPrint("Error during create user: $e");
     }
@@ -25,25 +35,44 @@ class AuthModel {
   Future<void> signIn(
       BuildContext context, String email, String password) async {
     try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
+      await FirebaseAuth.instance
+          .signInWithEmailAndPassword(
         email: email,
         password: password,
-      );
-      debugPrint("SIGNING IN");
-    } catch (e) {
+      )
+          .then((value) {
+        debugPrint("SIGNING IN");
+      }).onError((error, stackTrace) {
+        showDialog(
+            context: context,
+            builder: (context) {
+              return Dialog(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text("Error during sign-in: $error"),
+                ),
+              );
+            });
+      });
+    } on FirebaseAuthException catch (e) {
       // Handle authentication exceptions
       debugPrint("Error during sign-in: $e");
     }
   }
 
   Future<void> logout() async {
-    await FirebaseAuth.instance.signOut();
+    try {
+      await FirebaseAuth.instance.signOut();
+    } on FirebaseAuthException catch (e) {
+      // Handle exceptions
+      debugPrint("Error during logout: $e");
+    }
   }
 
   Future<void> forgotPassword(BuildContext context, String email) async {
     try {
       await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
-    } catch (e) {
+    } on FirebaseAuthException catch (e) {
       // Handle exceptions
       debugPrint("Error during send reset email: $e");
     }
