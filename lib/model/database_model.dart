@@ -20,7 +20,7 @@ class DatabaseModel {
 
   // add note
   Future<void> addNote(String title, String content) async {
-    // add note to "notes" collection
+    // get unique id from firestore
     String docRef = firebaseFirestore
         .collection("users")
         .doc(uid)
@@ -28,9 +28,11 @@ class DatabaseModel {
         .doc()
         .id;
 
+    // create note entity
     NoteEntity noteEntity = NoteEntity(
         docId: docRef, title: title, content: content, checked: false, date: Timestamp.fromDate(DateTime.now()));
 
+    // create document on firestore
     await firebaseFirestore
         .collection("users")
         .doc(uid)
@@ -42,8 +44,6 @@ class DatabaseModel {
     }).onError((error, stackTrace) {
       debugPrint("ERROR: ${error.toString()}");
     });
-
-    // add note id to "users" collection
   }
 
   // fetch note
