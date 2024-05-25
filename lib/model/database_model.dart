@@ -11,7 +11,7 @@ class DatabaseModel {
   /* createUser function
   takes String newUid, String email, String name
   create a new UserEntity
-  using "set"
+  using "set" method
   catch error using "then" and "onError"
   */
   Future<void> createUser(String newUid, String email, String name) async {
@@ -32,7 +32,7 @@ class DatabaseModel {
   takes String title, String content
   get unique id from firestore, using ".doc().id"
   create a new NoteEntity
-  using "set"
+  using "set" method
   catch error using "then" and "onError"
   */
   Future<void> addNote(String title, String content) async {
@@ -70,7 +70,7 @@ class DatabaseModel {
 
   /* updateNote function
   takes NoteEntity noteEntity
-  using "set"
+  using "set" method
   catch error using "then" and "onError"
   */
   Future<void> updateNote(NoteEntity noteEntity) async {
@@ -88,7 +88,7 @@ class DatabaseModel {
 
   /* deleteNote function
   takes String docId
-  using "delete"
+  using "delete" method
   catch error using "then" and "onError"
   */
   Future<void> deleteNote(String docId) async {

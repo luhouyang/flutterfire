@@ -7,7 +7,7 @@ class AuthModel {
 
   /* signUp function, asynchronous, 
   takes BuildContext context, String email, String password, String username,
-  using "createUserWithEmailAndPassword"
+  using "createUserWithEmailAndPassword" method
   encapsulate with try-catch
   on error, show error message with showDialog
   return void */
@@ -42,7 +42,7 @@ class AuthModel {
 
   /* signIn function, asynchronous, 
   takes BuildContext context, String email, String password,
-  using "signInWithEmailAndPassword"
+  using "signInWithEmailAndPassword" method
   encapsulate with try-catch
   on error, show error message with showDialog
   return void */
@@ -76,7 +76,7 @@ class AuthModel {
 
   /* logout function, asynchronous, 
   doesn't take any arguments
-  using "signOut"
+  using "signOut" method
   encapsulate with try-catch
   return void */
   Future<void> logout() async {
@@ -90,7 +90,7 @@ class AuthModel {
 
   /* forgotPassword function, asynchronous, 
   takes BuildContext context, String email,
-  using "sendPasswordResetEmail"
+  using "sendPasswordResetEmail" method
   encapsulate with try-catch
   return void */
   Future<void> forgotPassword(BuildContext context, String email) async {
