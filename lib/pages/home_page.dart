@@ -67,7 +67,9 @@ class _HomePageState extends State<HomePage> {
                 onPressed: () async {
                   await AuthModel().logout();
                 },
-                style: ButtonStyle(backgroundColor: MaterialStatePropertyAll(Colors.grey[400])),
+                style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStatePropertyAll(Colors.grey[400])),
                 child: const MyTitle(text: "Logout"),
               ),
             ],
@@ -105,14 +107,19 @@ class _HomePageState extends State<HomePage> {
                   MyTitle(text: noteEntity.title),
                   const Divider(
                     height: 2,
-                  ), 
+                  ),
                   Text(
                     noteEntity.date.toDate().toString(),
                     textAlign: TextAlign.start,
                   ),
-                  Text(
-                    noteEntity.content,
-                    textAlign: TextAlign.start,
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.75,
+                    child: Text(
+                      noteEntity.content,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      softWrap: false,
+                    ),
                   )
                 ],
               ),
