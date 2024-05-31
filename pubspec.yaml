@@ -12,6 +12,7 @@ dependencies:
   firebase_core: ^2.27.0
   flutter:
     sdk: flutter
+  qr_flutter: ^4.1.0
 
 dev_dependencies:
   flutter_test:

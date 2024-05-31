@@ -8,6 +8,8 @@ import 'package:note/pages/add_note_page.dart';
 import 'package:note/pages/update_note_page.dart';
 import 'package:note/widgets/my_title.dart';
 
+// import 'package:qr_flutter/qr_flutter.dart';
+
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -36,6 +38,15 @@ class _HomePageState extends State<HomePage> {
           physics: const NeverScrollableScrollPhysics(),
           child: Column(
             children: [
+              // const SizedBox(
+              //   height: 25,
+              // ),
+              // QrImageView(
+              //   data: "$uid;${FirebaseAuth.instance.currentUser!.email!}",
+              //   gapless: true,
+              //   version: QrVersions.auto,
+              //   size: 200,
+              // ),
               StreamBuilder(
                 stream: FirebaseFirestore.instance
                     .collection("users")
