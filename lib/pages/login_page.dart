@@ -86,7 +86,7 @@ class _LoginPageState extends State<LoginPage> {
                         const Text(
                           "SIGN UP",
                           style: TextStyle(
-                              color: Colors.black,
+                              color: Colors.blue,
                               fontWeight: FontWeight.bold,
                               fontSize: 36),
                         ),
