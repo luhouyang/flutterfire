@@ -19,6 +19,7 @@ class _UpdateNotePageState extends State<UpdateNotePage> {
 
   @override
   void initState() {
+    // initialize title, content
     titleController.text = widget.noteEntity.title;
     contentController.text = widget.noteEntity.content;
     super.initState();
@@ -27,6 +28,11 @@ class _UpdateNotePageState extends State<UpdateNotePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.blue,
+        title: const MyTitle(text: "Edit Note"),
+        foregroundColor: Colors.white,
+      ),
       body: SingleChildScrollView(
         physics: const NeverScrollableScrollPhysics(),
         child: Padding(
@@ -34,9 +40,8 @@ class _UpdateNotePageState extends State<UpdateNotePage> {
           child: Column(
             children: [
               const SizedBox(
-                height: 30,
+                height: 10,
               ),
-              const MyTitle(text: "Edit Note"),
               MyInput(
                   controller: titleController, labelText: "title", height: 50),
               const SizedBox(
@@ -46,8 +51,14 @@ class _UpdateNotePageState extends State<UpdateNotePage> {
                   controller: contentController,
                   labelText: "content",
                   height: MediaQuery.of(context).size.height * 0.5),
-              updateNoteButton(),
-              deleteNoteButton(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  updateNoteButton(),
+                  deleteNoteButton(),
+                ],
+              ),
             ],
           ),
         ),
@@ -56,12 +67,12 @@ class _UpdateNotePageState extends State<UpdateNotePage> {
   }
 
   Widget updateNoteButton() {
-    return TextButton(
+    return ElevatedButton(
       style: const ButtonStyle(
-          shape: MaterialStatePropertyAll(BeveledRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(8)))),
-          backgroundColor: MaterialStatePropertyAll(Colors.amber)),
+          foregroundColor: WidgetStatePropertyAll(Colors.white),
+          backgroundColor: WidgetStatePropertyAll(Colors.blue)),
       onPressed: () async {
+        // make new note entity and call database model update, then pop context
         NoteEntity noteEntity = NoteEntity(
             docId: widget.noteEntity.docId,
             title: titleController.text,
@@ -73,28 +84,22 @@ class _UpdateNotePageState extends State<UpdateNotePage> {
           Navigator.pop(context);
         });
       },
-      child: const Text(
-        "Update Note",
-        style: TextStyle(color: Colors.black),
-      ),
+      child: const Text("Update Note"),
     );
   }
 
   Widget deleteNoteButton() {
-    return TextButton(
+    return ElevatedButton(
       style: const ButtonStyle(
-          shape: MaterialStatePropertyAll(BeveledRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(8)))),
-          backgroundColor: MaterialStatePropertyAll(Colors.red)),
+          foregroundColor: WidgetStatePropertyAll(Colors.white),
+          backgroundColor: WidgetStatePropertyAll(Colors.red)),
       onPressed: () async {
+        // call database model delete, then pop context
         await DatabaseModel().deleteNote(widget.noteEntity.docId).then((value) {
           Navigator.pop(context);
         });
       },
-      child: const Text(
-        "Delete Note",
-        style: TextStyle(color: Colors.black),
-      ),
+      child: const Text("Delete Note"),
     );
   }
 }

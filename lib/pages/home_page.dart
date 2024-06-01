@@ -1,12 +1,11 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:note/entities/note_entity.dart';
 import 'package:note/model/auth_model.dart';
-import 'package:note/model/database_model.dart';
 import 'package:note/pages/add_note_page.dart';
-import 'package:note/pages/update_note_page.dart';
-import 'package:note/widgets/my_title.dart';
+import 'package:note/usecase/user_usecase.dart';
+import 'package:note/widgets/loading_text.dart';
+import 'package:note/widgets/my_dialogs.dart';
+import 'package:note/widgets/note_stream.dart';
+import 'package:provider/provider.dart';
 
 // import 'package:qr_flutter/qr_flutter.dart';
 
@@ -18,133 +17,92 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  String uid = FirebaseAuth.instance.currentUser!.uid;
+  // get user data at initState
+  @override
+  void initState() {
+    UserUsecase userUsecase = Provider.of<UserUsecase>(context, listen: false);
+    userUsecase.getUserData();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      floatingActionButtonLocation: FloatingActionButtonLocation.miniEndFloat,
-      floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.add),
-        onPressed: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const AddNotePage(),
-              ));
-        },
-      ),
-      body: SingleChildScrollView(
-          physics: const NeverScrollableScrollPhysics(),
-          child: Column(
-            children: [
-              // const SizedBox(
-              //   height: 25,
-              // ),
-              // QrImageView(
-              //   data: "$uid;${FirebaseAuth.instance.currentUser!.email!}",
-              //   gapless: true,
-              //   version: QrVersions.auto,
-              //   size: 200,
-              // ),
-              StreamBuilder(
-                stream: FirebaseFirestore.instance
-                    .collection("users")
-                    .doc(uid)
-                    .collection("notes")
-                    .orderBy('date', descending: true)
-                    .snapshots(),
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData ||
-                      snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
-
-                  return ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: snapshot.data!.size,
-                    itemBuilder: (context, index) {
-                      NoteEntity noteEntity =
-                          NoteEntity.fromMap(snapshot.data!.docs[index].data());
-
-                      return noteCard(noteEntity);
-                    },
-                  );
-                },
-              ),
-              TextButton(
-                onPressed: () async {
-                  await AuthModel().logout();
-                },
-                style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStatePropertyAll(Colors.grey[400])),
-                child: const MyTitle(text: "Logout"),
-              ),
-            ],
-          )),
-    );
-  }
-
-  Widget noteCard(NoteEntity noteEntity) {
-    return InkWell(
-      onHover: (value) {},
-      onTap: () {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => UpdateNotePage(noteEntity: noteEntity),
-            ));
+    return Consumer<UserUsecase>(
+      builder: (context, userUsecase, child) {
+        // check if user email is empty here using ternary, if empty return LoadingText()
+        return userUsecase.userEntity.email.isEmpty
+            ? const Scaffold(body: LoadingText())
+            : Scaffold(
+                appBar: AppBar(
+                  backgroundColor: Colors.blue,
+                  foregroundColor: Colors.white,
+                  title: Row(
+                    children: [
+                      const Text(
+                        "Hello! ",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      // add username here, replace placeholder
+                      Text(
+                        userUsecase.userEntity.username,
+                        overflow: TextOverflow.fade,
+                        softWrap: false,
+                        maxLines: 1,
+                        style: const TextStyle(
+                          color: Colors.amber,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                  actions: [
+                    IconButton(
+                        onPressed: () {
+                          // edit name dialog
+                          MyDialogs().editNameDialog(context);
+                        },
+                        icon: const Icon(Icons.edit)),
+                    IconButton(
+                        onPressed: () async {
+                          // call auth model logout
+                          await AuthModel().logout();
+                        },
+                        icon: const Icon(Icons.logout))
+                  ],
+                ),
+                body: const SingleChildScrollView(
+                    child: Column(
+                  children: [
+                    // const SizedBox(
+                    //   height: 25,
+                    // ),
+                    // QrImageView(
+                    //   data: "$uid;${FirebaseAuth.instance.currentUser!.email!}",
+                    //   gapless: true,
+                    //   version: QrVersions.auto,
+                    //   size: 200,
+                    // ),
+                    NoteStream(),
+                  ],
+                )),
+                floatingActionButtonLocation:
+                    FloatingActionButtonLocation.miniEndFloat,
+                floatingActionButton: FloatingActionButton(
+                  backgroundColor: Colors.blue,
+                  foregroundColor: Colors.white,
+                  child: const Icon(Icons.add),
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const AddNotePage(),
+                        ));
+                  },
+                ),
+              );
       },
-      child: Card(
-        margin: const EdgeInsets.all(8),
-        shadowColor: Colors.black,
-        shape: const BeveledRectangleBorder(
-          borderRadius: BorderRadius.all(
-            Radius.circular(8),
-          ),
-          side: BorderSide(color: Colors.black),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  MyTitle(text: noteEntity.title),
-                  const Divider(
-                    height: 2,
-                  ),
-                  Text(
-                    noteEntity.date.toDate().toString(),
-                    textAlign: TextAlign.start,
-                  ),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.75,
-                    child: Text(
-                      noteEntity.content,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      softWrap: false,
-                    ),
-                  )
-                ],
-              ),
-              Checkbox(
-                value: noteEntity.checked,
-                onChanged: (value) async {
-                  noteEntity.checked = !noteEntity.checked;
-                  await DatabaseModel().updateNote(noteEntity);
-                },
-              )
-            ],
-          ),
-        ),
-      ),
     );
   }
 }

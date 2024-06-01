@@ -10,9 +10,7 @@ class MyTitle extends StatelessWidget {
     return Text(
       text,
       style: const TextStyle(
-          fontSize: 24,
-          fontWeight: FontWeight.w500,
-          color: Colors.black),
+          fontSize: 24, fontWeight: FontWeight.w500, color: Colors.white),
     );
   }
 }

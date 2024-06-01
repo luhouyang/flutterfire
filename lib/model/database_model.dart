@@ -6,11 +6,51 @@ import 'package:note/entities/user_entity.dart';
 
 class DatabaseModel {
   String uid = FirebaseAuth.instance.currentUser!.uid;
+  //
   FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+
+  /*
+  getUserData function, async
+  doesn't take argument
+  get document from Firestore using uid
+  return Map<String,dynamic>
+  encapsulate in try, catch
+  */
+  Future<Map<String, dynamic>> getUserData() async {
+    try {
+      DocumentSnapshot doc =
+          await firebaseFirestore.collection('users').doc(uid).get();
+
+      return doc.data() as Map<String, dynamic>;
+    } on FirebaseException catch (e) {
+      debugPrint("Failed to get user data: $e");
+    }
+
+    return {};
+  }
+
+  /*
+  updateUsername function, async
+  takes UserEntity newUserEntity
+  set to "users" collection
+  return void
+  catch error using "then" and "onError"
+  */
+  Future<void> updateUsername(UserEntity newUserEntity) async {
+    await firebaseFirestore
+        .collection('users')
+        .doc(uid)
+        .set(newUserEntity.toMap())
+        .then((onValue) {
+      debugPrint("Successfully Updated");
+    }).onError((error, traceStack) {
+      debugPrint("Error updating user: $error");
+    });
+  }
 
   /* createUser function
   takes String newUid, String email, String name
-  create a new UserEntity
+  create new UserEntity
   using "set" method
   catch error using "then" and "onError"
   */
@@ -66,8 +106,6 @@ class DatabaseModel {
     });
   }
 
-  // fetch note
-
   /* updateNote function
   takes NoteEntity noteEntity
   using "set" method
@@ -79,7 +117,8 @@ class DatabaseModel {
         .doc(uid)
         .collection("notes")
         .doc(noteEntity.docId)
-        .set(noteEntity.toMap()).then((value) {
+        .set(noteEntity.toMap())
+        .then((value) {
       debugPrint("Successfully updated note");
     }).onError((error, stackTrace) {
       debugPrint("FAILED TO UPDATE NOTE: $error");
@@ -97,7 +136,8 @@ class DatabaseModel {
         .doc(uid)
         .collection("notes")
         .doc(docId)
-        .delete().then((value) {
+        .delete()
+        .then((value) {
       debugPrint("Successfully added note");
     }).onError((error, stackTrace) {
       debugPrint("FAILED TO DELETE NOTE: $error");

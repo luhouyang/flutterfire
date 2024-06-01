@@ -5,7 +5,7 @@ import 'package:note/model/database_model.dart';
 // implement AuthModel class
 class AuthModel {
 
-  /* signUp function, asynchronous, 
+  /* signUp function, async, 
   takes BuildContext context, String email, String password, String username,
   using "createUserWithEmailAndPassword" method
   encapsulate with try-catch
@@ -40,7 +40,7 @@ class AuthModel {
     }
   }
 
-  /* signIn function, asynchronous, 
+  /* signIn function, async, 
   takes BuildContext context, String email, String password,
   using "signInWithEmailAndPassword" method
   encapsulate with try-catch
@@ -74,7 +74,7 @@ class AuthModel {
     }
   }
 
-  /* logout function, asynchronous, 
+  /* logout function, async, 
   doesn't take any arguments
   using "signOut" method
   encapsulate with try-catch
@@ -88,7 +88,7 @@ class AuthModel {
     }
   }
 
-  /* forgotPassword function, asynchronous, 
+  /* forgotPassword function, async, 
   takes BuildContext context, String email,
   using "sendPasswordResetEmail" method
   encapsulate with try-catch

@@ -17,6 +17,11 @@ class _AddNotePageState extends State<AddNotePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.blue,
+        title: const MyTitle(text: "Make New Note"),
+        foregroundColor: Colors.white,
+      ),
       body: SingleChildScrollView(
         physics: const NeverScrollableScrollPhysics(),
         child: Padding(
@@ -24,9 +29,8 @@ class _AddNotePageState extends State<AddNotePage> {
           child: Column(
             children: [
               const SizedBox(
-                height: 30,
+                height: 10,
               ),
-              const MyTitle(text: "Make New Note"),
               MyInput(
                   controller: titleController, labelText: "title", height: 50),
               const SizedBox(
@@ -45,22 +49,19 @@ class _AddNotePageState extends State<AddNotePage> {
   }
 
   Widget addNoteButton() {
-    return TextButton(
+    return ElevatedButton(
       style: const ButtonStyle(
-          shape: MaterialStatePropertyAll(BeveledRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(8)))),
-          backgroundColor: MaterialStatePropertyAll(Colors.amber)),
+          foregroundColor: WidgetStatePropertyAll(Colors.white),
+          backgroundColor: WidgetStatePropertyAll(Colors.blue)),
       onPressed: () async {
+        // call database model add note, then pop context
         await DatabaseModel()
             .addNote(titleController.text, contentController.text)
             .then((value) {
           Navigator.pop(context);
         });
       },
-      child: const Text(
-        "Create Note",
-        style: TextStyle(color: Colors.black),
-      ),
+      child: const Text("Create Note"),
     );
   }
 }

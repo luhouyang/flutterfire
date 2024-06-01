@@ -24,12 +24,11 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
-      backgroundColor: const Color.fromARGB(255, 229, 229, 229),
+      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         physics: const NeverScrollableScrollPhysics(),
         child: Container(
           margin: const EdgeInsets.fromLTRB(25, 75, 25, 150),
-          color: const Color.fromARGB(255, 229, 229, 229),
           padding: const EdgeInsets.fromLTRB(10, 5, 10, 50),
           child: Column(
             children: [
@@ -39,17 +38,15 @@ class _LoginPageState extends State<LoginPage> {
                         const Text(
                           "SIGN IN",
                           style: TextStyle(
-                              color: Colors.black,
+                              color: Colors.blue,
                               fontWeight: FontWeight.bold,
                               fontSize: 36),
                         ),
                         const SizedBox(
                           height: 30,
                         ),
-                        inputTextWidget(
-                            "email", inEmailTextController),
-                        inputTextWidget(
-                            "password", inPassTextController),
+                        inputTextWidget("email", inEmailTextController),
+                        inputTextWidget("password", inPassTextController),
                         forgotPassword(),
                         Row(
                           mainAxisSize: MainAxisSize.max,
@@ -58,16 +55,23 @@ class _LoginPageState extends State<LoginPage> {
                               child: Padding(
                                   padding:
                                       const EdgeInsets.fromLTRB(0, 24, 0, 16),
-                                  child: FloatingActionButton(
-                                    onPressed: () async {
-                                      await AuthModel().signIn(
+                                  child: ElevatedButton(
+                                      style: const ButtonStyle(
+                                          foregroundColor:
+                                              WidgetStatePropertyAll(
+                                                  Colors.white),
+                                          backgroundColor:
+                                              WidgetStatePropertyAll(
+                                                  Colors.blue)),
+                                      onPressed: () async {
+                                        // call auth model signIn
+                                        await AuthModel().signIn(
                                           context,
                                           inEmailTextController.text.trim(),
                                           inPassTextController.text.trim(),
-                                          );
-                                    },
-                                    child: const MyTitle(text: "SIGN IN")
-                                  )),
+                                        );
+                                      },
+                                      child: const MyTitle(text: "SIGN IN"))),
                             ),
                           ],
                         ),
@@ -88,12 +92,9 @@ class _LoginPageState extends State<LoginPage> {
                         const SizedBox(
                           height: 30,
                         ),
-                        inputTextWidget(
-                            "email", upEmailTextController),
-                        inputTextWidget(
-                            "password", upPassTextController),
-                        inputTextWidget(
-                            "username", userNameTextController),
+                        inputTextWidget("email", upEmailTextController),
+                        inputTextWidget("password", upPassTextController),
+                        inputTextWidget("username", userNameTextController),
                         Row(
                           mainAxisSize: MainAxisSize.max,
                           children: [
@@ -101,21 +102,29 @@ class _LoginPageState extends State<LoginPage> {
                               child: Padding(
                                   padding:
                                       const EdgeInsets.fromLTRB(0, 24, 0, 16),
-                                  child: FloatingActionButton(
-                                    onPressed: () async {
-                                      await AuthModel().signUp(
+                                  child: ElevatedButton(
+                                      style: const ButtonStyle(
+                                          foregroundColor:
+                                              WidgetStatePropertyAll(
+                                                  Colors.white),
+                                          backgroundColor:
+                                              WidgetStatePropertyAll(
+                                                  Colors.blue)),
+                                      onPressed: () async {
+                                        // call auth model signUp
+                                        await AuthModel().signUp(
                                           context,
                                           upEmailTextController.text.trim(),
                                           upPassTextController.text.trim(),
                                           userNameTextController.text,
-                                          );
-                                    },
-                                    child: const MyTitle(text: "SIGN UP")
-                                  )),
+                                        );
+                                      },
+                                      child: const MyTitle(text: "SIGN UP"))),
                             ),
                           ],
                         ),
-                        const Divider(color: Colors.black, thickness: 1.5, height: 3.0),
+                        const Divider(
+                            color: Colors.black, thickness: 1.5, height: 3.0),
                         loginWithAccountText(),
                       ],
                     ),
@@ -126,26 +135,25 @@ class _LoginPageState extends State<LoginPage> {
     ));
   }
 
-  Widget inputTextWidget(
-      String hint, TextEditingController controller) {
+  Widget inputTextWidget(String hint, TextEditingController controller) {
     return Padding(
-        padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
-        child: TextFormField(
-            controller: controller,
-            style: const TextStyle(color: Colors.black),
-            decoration: InputDecoration(
-              filled: true,
-              fillColor: Colors.white,
-              hintText: hint,
-              hintStyle: const TextStyle(fontSize: 16, color: Colors.black),
-              enabledBorder: OutlineInputBorder(
-                borderSide: const BorderSide(color: Colors.black),
-                borderRadius: BorderRadius.circular(0),
-              ),
-              focusColor: Colors.blue,
-            ),
+      padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
+      child: TextFormField(
+        controller: controller,
+        style: const TextStyle(color: Colors.black),
+        decoration: InputDecoration(
+          filled: true,
+          fillColor: Colors.white,
+          hintText: hint,
+          hintStyle: const TextStyle(fontSize: 16, color: Colors.black),
+          enabledBorder: OutlineInputBorder(
+            borderSide: const BorderSide(color: Colors.black),
+            borderRadius: BorderRadius.circular(8.0),
           ),
-        );
+          focusColor: Colors.blue,
+        ),
+      ),
+    );
   }
 
   Widget forgotPassword() {
@@ -161,6 +169,7 @@ class _LoginPageState extends State<LoginPage> {
                   recognizer: TapGestureRecognizer()
                     ..onTap = () {
                       if (inEmailTextController.text.isNotEmpty) {
+                        // call auth model forgotPassword
                         AuthModel().forgotPassword(
                             context, inEmailTextController.text);
                       } else {

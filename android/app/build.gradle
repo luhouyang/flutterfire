@@ -1,5 +1,8 @@
 plugins {
     id "com.android.application"
+    // START: FlutterFire Configuration
+    id 'com.google.gms.google-services'
+    // END: FlutterFire Configuration
     id "kotlin-android"
     id "dev.flutter.flutter-gradle-plugin"
 }
@@ -26,6 +29,10 @@ android {
     namespace "com.example.note"
     compileSdkVersion flutter.compileSdkVersion
     ndkVersion flutter.ndkVersion
+
+    lintOptions {
+        warning 'Deprecation'
+    }
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
