@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:note/entities/note_entity.dart';
 import 'package:note/model/database_model.dart';
 import 'package:note/widgets/my_input.dart';
@@ -28,6 +29,7 @@ class _UpdateNotePageState extends State<UpdateNotePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.blue,
         title: const MyTitle(text: "Edit Note"),

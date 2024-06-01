@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
 import 'package:note/entities/note_entity.dart';
 import 'package:note/widgets/loading_text.dart';
 import 'package:note/widgets/note_card.dart';

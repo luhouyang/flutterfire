@@ -1,9 +1,10 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
 import 'package:note/firebase_options.dart';
 import 'package:note/pages/auth_stream.dart';
 import 'package:note/usecase/user_usecase.dart';
-import 'package:provider/provider.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,6 +21,7 @@ class MainApp extends StatelessWidget {
       providers: [ChangeNotifierProvider(create: (context) => UserUsecase())],
       child: const MaterialApp(
         debugShowCheckedModeBanner: false,
+        color: Colors.blue,
         home: AuthStream(),
       ),
     );

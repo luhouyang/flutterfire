@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:note/entities/user_entity.dart';
 import 'package:note/model/database_model.dart';
 
@@ -38,7 +39,7 @@ class UserUsecase extends ChangeNotifier {
     userEntity.username = newUsername;
 
     await DatabaseModel().updateUsername(userEntity);
-    
+
     notifyListeners();
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+
 import 'package:note/entities/note_entity.dart';
 import 'package:note/pages/update_note_page.dart';
 

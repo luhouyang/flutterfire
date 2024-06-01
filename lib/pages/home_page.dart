@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
+
 import 'package:note/model/auth_model.dart';
 import 'package:note/pages/add_note_page.dart';
 import 'package:note/usecase/user_usecase.dart';
 import 'package:note/widgets/loading_text.dart';
 import 'package:note/widgets/my_dialogs.dart';
 import 'package:note/widgets/note_stream.dart';
-import 'package:provider/provider.dart';
 
 // import 'package:qr_flutter/qr_flutter.dart';
 
@@ -17,11 +19,16 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  // get user data at initState
   @override
   void initState() {
+    // get user data at initState
     UserUsecase userUsecase = Provider.of<UserUsecase>(context, listen: false);
     userUsecase.getUserData();
+
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
     super.initState();
   }
 
@@ -31,8 +38,9 @@ class _HomePageState extends State<HomePage> {
       builder: (context, userUsecase, child) {
         // check if user email is empty here using ternary, if empty return LoadingText()
         return userUsecase.userEntity.email.isEmpty
-            ? const Scaffold(body: LoadingText())
+            ? const Scaffold(backgroundColor: Colors.white, body: LoadingText())
             : Scaffold(
+                backgroundColor: Colors.white,
                 appBar: AppBar(
                   backgroundColor: Colors.blue,
                   foregroundColor: Colors.white,

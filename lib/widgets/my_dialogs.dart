@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:note/usecase/user_usecase.dart';
 import 'package:provider/provider.dart';
+
+import 'package:note/usecase/user_usecase.dart';
 
 class MyDialogs {
   Future<void> editNameDialog(BuildContext context) async {

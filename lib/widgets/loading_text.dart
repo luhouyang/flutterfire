@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 
 class LoadingText extends StatefulWidget {
@@ -56,14 +55,14 @@ class _LoadingTextState extends State<LoadingText> {
             _mssg[_currentTextMssg],
             style: const TextStyle(
               fontWeight: FontWeight.bold,
-              color: Color.fromARGB(255, 100, 100, 255),
+              color: Colors.blue,
             ),
           ),
           const SizedBox(
             width: 15,
           ),
           const CircularProgressIndicator(
-            color: Color.fromARGB(255, 100, 100, 255),
+            color: Colors.blue,
             strokeCap: StrokeCap.round,
           )
         ],

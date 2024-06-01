@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:note/model/database_model.dart';
 import 'package:note/widgets/my_input.dart';
 import 'package:note/widgets/my_title.dart';
@@ -17,6 +18,7 @@ class _AddNotePageState extends State<AddNotePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.blue,
         title: const MyTitle(text: "Make New Note"),
