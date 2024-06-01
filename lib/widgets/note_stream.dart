@@ -31,7 +31,13 @@ class _NoteStreamState extends State<NoteStream> {
           return const LoadingText();
         }
         if (snapshot.data!.docs.isEmpty) {
-          return const Center(child: Text("No Notes", style: TextStyle(fontWeight: FontWeight.bold),));
+          return SizedBox(
+              height: MediaQuery.of(context).size.height,
+              child: const Center(
+                  child: Text(
+                "No Notes",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              )));
         }
 
         return ListView.builder(

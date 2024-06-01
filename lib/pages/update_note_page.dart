@@ -79,7 +79,6 @@ class _UpdateNotePageState extends State<UpdateNotePage> {
             docId: widget.noteEntity.docId,
             title: titleController.text,
             content: contentController.text,
-            checked: widget.noteEntity.checked,
             date: widget.noteEntity.date);
 
         await DatabaseModel().updateNote(noteEntity).then((value) {

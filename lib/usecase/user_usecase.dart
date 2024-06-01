@@ -4,6 +4,7 @@ import 'package:note/entities/user_entity.dart';
 import 'package:note/model/database_model.dart';
 
 class UserUsecase extends ChangeNotifier {
+  // create empty UserEntity instance
   UserEntity userEntity = UserEntity(username: "", email: "");
 
   /*

@@ -6,8 +6,10 @@ import 'package:note/entities/note_entity.dart';
 import 'package:note/entities/user_entity.dart';
 
 class DatabaseModel {
+  // get currentUser uid
   String uid = FirebaseAuth.instance.currentUser!.uid;
-  //
+
+  // get firestore instance
   FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
 
   /*
@@ -90,7 +92,6 @@ class DatabaseModel {
         docId: docRef,
         title: title,
         content: content,
-        checked: false,
         date: Timestamp.fromDate(DateTime.now()));
 
     // create document on firestore
